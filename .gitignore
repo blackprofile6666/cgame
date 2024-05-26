@@ -1,52 +1,604 @@
-# Prerequisites
-*.d
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <Windows.h>
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+char map1[3][15] = { {'W','W','W','W','W','W','W','W','W','W','W','W','W','W','W'},
+					{' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','E'},
+					{'W','W','W','W','W','W','W','W','W','W','W','W','W','W','W'} };
 
-# Linker output
-*.ilk
-*.map
-*.exp
+char map2[5][15] = { {'W','W','W','W','W','W','W','W','W','W','W','W','W','W','W'},
+					 {'W',' ',' ',' ','W',' ',' ',' ','W',' ',' ',' ','W',' ','E'},
+					 {'W',' ','W',' ','W',' ','W',' ','W',' ','W',' ','W',' ','W'},
+					 {'W',' ','W',' ',' ',' ','W',' ',' ',' ','W',' ',' ',' ','W'},
+					 {'W','W','W','W','W','W','W','W','W','W','W','W','W','W','W'} };
 
-# Precompiled Headers
-*.gch
-*.pch
+char map3[8][15] = { {'W','W','W','W','W','W','W','W','W','W','W','W','W','W','W'},
+					 {'W',' ','W',' ',' ',' ',' ',' ',' ',' ',' ','W',' ',' ','W'},
+					 {'W',' ','W',' ',' ',' ',' ','W','W','W',' ','W','W',' ','W'},
+					 {'W',' ','W','W','W','W',' ','W',' ','W',' ','W',' ',' ','W'},
+					 {'W',' ',' ',' ',' ','W',' ','W',' ','W',' ','W',' ',' ','W'},
+					 {'W',' ','W','W',' ','W',' ','W',' ','W',' ','W',' ',' ','W'},
+					 {'W',' ','K','W',' ',' ',' ','W',' ',' ',' ',' ',' ',' ','E'},
+					 {'W','W','W','W','W','W','W','W','W','W','W','W','W','W','W'} };
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+char map4[11][15] = { {'W','W','W','W','W','W','W','W','W','W','W','W','W','W','W'},
+					  {'W',' ',' ',' ',' ',' ',' ',' ','W',' ',' ',' ','W',' ','E'},
+					  {'W',' ','W','W','W','W','W',' ','W',' ','W',' ','W',' ','W'},
+					  {'W',' ',' ',' ',' ',' ','W',' ',' ',' ','W',' ','W',' ','W'},
+					  {'W','W','W','W','W',' ','W',' ','W','W','W',' ','W',' ','W'},
+					  {'W',' ',' ',' ',' ',' ','W',' ',' ',' ','W',' ',' ',' ','W'},
+					  {'W',' ','W','W','W','W','W','W','W',' ','W',' ','W','W','W'},
+					  {'W',' ',' ',' ',' ',' ','W',' ',' ',' ','W','W','W','K','W'},
+					  {'W','W','W','W','W',' ','W',' ','W','W','W',' ','W',' ','W'},
+					  {'W',' ',' ',' ',' ',' ','W',' ',' ',' ',' ',' ',' ',' ','W'},
+					  {'W','W','W','W','W','W','W','W','W','W','W','W','W','W','W'} };
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+char map5[11][15] = { {'W','W','W','W','W','W','W','W','W','W','W','W','W','W','W'},
+					  {'W',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','W'},
+					  {'W','W','W','W','W','W','W','W','W','W','W','W','W',' ','W'},
+					  {'W',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','W'},
+					  {'W',' ','W','W','W','W','W','W','W','W','W','W','W',' ','W'},
+					  {'W',' ','W',' ',' ',' ','W',' ',' ',' ','W','K','W',' ','W'},
+					  {'W',' ','W',' ','W',' ','W',' ','W',' ','W',' ','W',' ','W'},
+					  {'W',' ','W',' ','W',' ','W',' ','W',' ','W',' ','W',' ','W'},
+					  {'W',' ','W',' ','W',' ','W',' ','W',' ','W',' ','W',' ','W'},
+					  {'W',' ',' ',' ','W',' ',' ',' ','W',' ',' ',' ','W',' ','E'},
+					  {'W','W','W','W','W','W','W','W','W','W','W','W','W','W','W'} };
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+char map6[20][15] = { {'W','W','W','W','W','W','W','W','W','W','W','W','W','W','W'},
+					  {'W',' ',' ',' ','W',' ',' ',' ',' ',' ',' ',' ',' ',' ','W'},
+					  {'W',' ','W',' ','W',' ','W',' ',' ','W',' ','W','W',' ','W'},
+					  {'W',' ','W',' ',' ',' ','W',' ',' ','W',' ','W',' ',' ','W'},
+					  {'W','k','W',' ','W',' ','W','W',' ','W',' ','W','W',' ','W'},
+					  {'W','W','W','W','W',' ','W',' ',' ','W',' ','Y','W',' ','W'},
+					  {'W',' ',' ',' ',' ',' ','W','W',' ','W','W','W','W',' ','W'},
+					  {'W',' ','W','W','W',' ',' ','W',' ',' ','W',' ',' ',' ','W'},
+					  {'W',' ','W',' ','W',' ',' ','W',' ','W','W',' ','W','W','W'},
+					  {'W',' ','W',' ','W',' ','W','W',' ','W',' ',' ',' ',' ','E'},
+					  {'W',' ','W',' ','W',' ','W',' ',' ','W',' ','W','W','W','W'},
+					  {'W',' ','W',' ','W','W','W',' ',' ','W',' ','W','K',' ','W'},
+					  {'W',' ','W',' ',' ',' ',' ',' ','W','W',' ','W','W',' ','W'},
+					  {'W',' ','W',' ','W','W','W',' ','W',' ',' ',' ','W',' ','W'},
+					  {'W',' ','W',' ','W',' ','W',' ','W',' ','W','W','W',' ','W'},
+					  {'W',' ','W',' ','W',' ','W',' ','W',' ',' ','W',' ',' ','W'},
+					  {'W',' ','W','e','W',' ','W',' ','W','W',' ','W','W',' ','W'},
+					  {'W',' ','W','W','W',' ','W',' ',' ','W','W','W',' ',' ','W'},
+					  {'W',' ',' ',' ',' ',' ','W','W',' ',' ',' ',' ',' ',' ','W'},
+					  {'W','W','W','W','W','W','W','W','W','W','W','W','W','W','W'} };
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+void printMap(char map[][15], int rows, int cols) {
+	for (int row = 0; row < rows; row++) {
+		for (int column = 0; column < cols; column++) {
+			// 첫째 Wall이면 벽 출력
+			if (map[row][column] == 'W')
+				printf("\033[44m  \033[0m");
+			// 둘째 ' '이면 길 출력
+			else if (map[row][column] == ' ')
+				printf("  ");
+			// 셋째 Exit이면 문 출력
+			else if (map[row][column] == 'E')
+				printf("  ");
+			//열쇠 출력
+			else if (map[row][column] == 'K')
+				printf("\033[34m* \033[0m");
+			else if (map[row][column] == 'e')
+				printf("\033[34m^ \033[0m");
+			else if (map[row][column] == 'k')
+				printf("\033[34m` \033[0m");
+			else if (map[row][column] == 'Y')
+				printf("\033[34m, \033[0m");
+		}
+		printf("\n");
+	}
+}
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+void move(char map[][15], char direction, int* row, int* column) {
+	// W는 위로 길 한칸 이동
+	if ((map[*row - 1][*column] != 'W') && ((direction == 'w') || (direction == 'W')))
+		*row = *row - 1;
+	// A는 왼쪽으로 길 한칸 이동
+	else if ((map[*row][*column - 1] != 'W') && ((direction == 'a') || (direction == 'A')))
+		*column = *column - 1;
+	// S는 아래로 길 한칸 이동
+	else if ((map[*row + 1][*column] != 'W') && ((direction == 's') || (direction == 'S')))
+		*row = *row + 1;
+	// D는 오른쪽으로 길 한칸 이동
+	else if ((map[*row][*column + 1] != 'W') && ((direction == 'd') || (direction == 'D')))
+		*column = *column + 1;
+}
+
+int success( char destination ) {
+	// Exit에 도착하면 종료
+	if( destination == 'E' ) {
+		return 1;
+	}
+	// 아니면 게임 계속 진행
+	else {
+		return 0;
+	}
+}
+int key(char destination) {
+	if (destination == 'K') {
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+int key2(char destination) {
+	if (destination == 'e') {
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+int key3(char destination) {
+	if (destination == 'k') {
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+int key4(char destination) {
+	if (destination == 'Y') {
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+
+
+
+int main() {
+	char answer = '\0';
+	//게임 시작
+	while (1) {
+		printf("The Maze\n");
+		printf("     \n");
+		printf("     \n");
+		printf("     \n");
+		printf("Press 'P' and Enter.\n");
+	
+		scanf("%c", &answer);
+		if (answer != 'P') {
+			printf(" ");
+			Sleep(1000);
+			system("cls");
+		}
+		else {
+			break;
+		}
+	}
+	system("cls");
+
+
+
+	//인트로
+	printf("여...여긴 어디지?\n");
+	Sleep(3000);
+	printf("기억이 나지 않아..\n");
+	Sleep(3000);
+	system("cls");
+
+
+
+
+	char direction = 'w';
+	int row = 1, column = 1;
+
+	// 먼저 맵 출력
+	printMap(map1, 3, 15);
+	//독백1
+	printf("\033[2;3f옷");
+	printf("\033[4;1f고대의 유적인가...?\n");
+	Sleep(2000);
+	printf("\033[4;1f위험해 보이지만.. 그렇다고 이곳에 갇혀 있을 수만은 없지. 출구를 찾아보자.\n");
+	Sleep(2000);
+	printf("\033[4;1f                                                                         \n");
+
+	do {
+		// 캐릭터를 기존 위치에서 지우고 이동한 새 위치에 출력
+		printf("\033[%d;%df  ", row + 1, column * 2 + 1);
+		move(map1, direction, &row, &column);
+		printf("\033[%d;%df옷", row + 1, column * 2 + 1);
+
+		// 게임 종료 확인
+		if (success(map1[row][column]) == 1) {
+			break;
+		}
+
+		// 게임 종료 아니면 새 이동 방향 입력 받아서 게임 계속 진행
+		printf("\033[10;1fWASD와[Enter]를 입력하세요:                  \033[10;29f");
+		scanf("\n%c", &direction);
+		printf("\033[11;1f                                                      ");
+
+	} while ((direction == 'W') || (direction == 'A') || (direction == 'S') || (direction == 'D')
+		|| (direction == 'w') || (direction == 'a') || (direction == 's') || (direction == 'd'));
+	system("cls");
+
+
+	//2단계 시작
+	row = 3, column = 1;
+	//맵2 출력
+	printMap(map2, 5, 15);
+
+	//독백2
+	printf("\033[4;3f옷");
+	printf("\033[6;1f도대체 얼마나 큰거야...?\n");
+	Sleep(2000);
+	printf("\033[6;1f마치 거대한 미로 같은.....\n");
+	Sleep(2000);
+	printf("\033[6;1f                            \n");
+
+	do {
+		// 캐릭터를 기존 위치에서 지우고 이동한 새 위치에 출력
+		printf("\033[%d;%df  ", row + 1, column * 2 + 1);
+		move(map2, direction, &row, &column);
+		printf("\033[%d;%df옷", row + 1, column * 2 + 1);
+
+		// 게임 종료 확인
+		if (success(map2[row][column]) == 1) {
+			break;
+		}
+
+		// 게임 종료 아니면 새 이동 방향 입력 받아서 게임 계속 진행
+		printf("\033[10;1fWASD와[Enter]를 입력하세요:                  \033[10;29f");
+		scanf("\n%c", &direction);
+		printf("\033[11;1f                                                      ");
+
+	} while ((direction == 'W') || (direction == 'A') || (direction == 'S') || (direction == 'D')
+		|| (direction == 'w') || (direction == 'a') || (direction == 's') || (direction == 'd'));
+	system("cls");
+
+	//맵3출력
+	row = 1, column = 1;
+	int mykey = 0;
+	printMap(map3, 8, 15);
+	//독백3
+	printf("\033[2;3f옷");
+	printf("\033[9;1f이전의 방들보다 훨씬 넓은 거 같은데....\n");
+	Sleep(2000);
+	printf("\033[9;1f다음 방으로 나아가기 위해 찾아야 할 것이 있을까?\n");
+	Sleep(2000);
+	printf("\033[9;1f                                                 \n");
+
+	do {
+		// 캐릭터를 기존 위치에서 지우고 이동한 새 위치에 출력
+		printf("\033[%d;%df  ", row + 1, column * 2 + 1);
+		move(map3, direction, &row, &column);
+		printf("\033[%d;%df옷", row + 1, column * 2 + 1);
+		//열쇠 획득
+		if (key(map3[row][column]) == 1) {
+			mykey = 1;
+			printf("\033[9;1f열쇠를 발견했다.\n");
+			Sleep(2000);
+			printf("\033[9;1f                                \n");
+		}
+
+		// 게임 종료 확인
+		if ((success(map3[row][column]) == 1)&&(mykey == 1)) {
+			break;
+		}
+		else if ((success(map3[row][column]) == 1) && (mykey == 0)) {
+			printf("\033[9;1f잠겨있다.\n");
+			Sleep(2000);
+			printf("\033[9;1f                       \n");
+		}
+		
+		// 게임 종료 아니면 새 이동 방향 입력 받아서 게임 계속 진행
+		printf("\033[10;1fWASD와[Enter]를 입력하세요:                  \033[10;29f");
+		scanf("\n%c", &direction);
+		printf("\033[11;1f                                                      ");
+
+	} while ((direction == 'W') || (direction == 'A') || (direction == 'S') || (direction == 'D')
+		|| (direction == 'w') || (direction == 'a') || (direction == 's') || (direction == 'd'));
+	system("cls");
+
+	//맵4 출력
+	row = 9, column = 1;
+	mykey = 0;
+	printMap(map4, 11, 15);
+	//독백4
+	printf("\033[10;3f옷\n");
+	printf("\033[10;5f~~긋~~\n");
+	Sleep(2000);
+	printf("\033[10;5f       \n");
+	printf("\033[12;1f!!!!!\n");
+	Sleep(1500);
+	printf("\033[12;1f뭐.뭐지...!?");
+	Sleep(2000);
+	printf("\033[12;1f저건..사람이 아니었어....\n");
+	Sleep(2000);
+	printf("\033[12;1f이곳에....나만 있는 게 아닌 거 같아..\n");
+	Sleep(2000);
+	printf("\033[12;1f                                         ");
+
+	do {
+		// 캐릭터를 기존 위치에서 지우고 이동한 새 위치에 출력
+		printf("\033[%d;%df  ", row + 1, column * 2 + 1);
+		move(map4, direction, &row, &column);
+		printf("\033[%d;%df옷", row + 1, column * 2 + 1);
+		//열쇠 획득
+		if (key(map4[row][column]) == 1) {
+			mykey = 1;
+			printf("\033[12;1f열쇠를 발견했다.\n");
+			Sleep(2000);
+			printf("\033[12;1f                                \n");
+		}
+
+		// 게임 종료 확인
+		if ((success(map4[row][column]) == 1) && (mykey == 1)) {
+			break;
+		}
+		else if ((success(map4[row][column]) == 1) && (mykey == 0)) {
+			printf("\033[12;1f잠겨있다.\n");
+			Sleep(2000);
+			printf("\033[12;1f                       \n");
+		}
+
+		// 게임 종료 아니면 새 이동 방향 입력 받아서 게임 계속 진행
+		printf("\033[15;1fWASD와[Enter]를 입력하세요:                  \033[15;29f");
+		scanf("\n%c", &direction);
+		printf("\033[16;1f                                                      ");
+
+	} while ((direction == 'W') || (direction == 'A') || (direction == 'S') || (direction == 'D')
+		|| (direction == 'w') || (direction == 'a') || (direction == 's') || (direction == 'd'));
+	system("cls");
+
+	//맵5출력
+	row = 1, column = 1;
+	mykey = 0;
+	printMap(map5, 11, 15);
+	//컷신 및 독백
+	printf("\033[2;3f옷\n");
+	printf("\033[2;6f ~~긋~~\n");
+	Sleep(30);
+	printf("\033[2;7f ~~긋~~\n");
+	Sleep(30);
+	printf("\033[2;8f ~~긋~~\n");
+	Sleep(30);
+	printf("\033[2;9f ~~긋~~\n");
+	Sleep(30);
+	printf("\033[2;10f ~~긋~~\n");
+	Sleep(30);
+	printf("\033[2;11f ~~긋~~\n");
+	Sleep(30);
+	printf("\033[2;12f ~~긋~~\n");
+	Sleep(30);
+	printf("\033[2;13f ~~긋~~\n");
+	Sleep(30);
+	printf("\033[2;14f ~~긋~~\n");
+	Sleep(30);
+	printf("\033[2;15f ~~긋~~\n");
+	Sleep(30);
+	printf("\033[2;16f ~~긋~~\n");
+	Sleep(30);
+	printf("\033[2;17f ~~긋~~\n");
+	Sleep(30);
+	printf("\033[2;18f ~~긋~~\n");
+	Sleep(30);
+	printf("\033[2;19f ~~긋~~\n");
+	Sleep(30);
+	printf("\033[2;20f ~~긋~~\n");
+	Sleep(30);
+	printf("\033[2;20f       \n");
+	Sleep(100);
+	printf("\033[12;1f저 녀석.. 도대체 정체가 뭐야..?\n");
+	Sleep(2000);
+	printf("\033[12;1f앞으로 조심해야겠어.             \n");
+	Sleep(2000);
+	printf("\033[12;1f                           \n");
+
+	do {
+		// 캐릭터를 기존 위치에서 지우고 이동한 새 위치에 출력
+		printf("\033[%d;%df  ", row + 1, column * 2 + 1);
+		move(map5, direction, &row, &column);
+		printf("\033[%d;%df옷", row + 1, column * 2 + 1);
+		//열쇠 획득
+		if (key(map5[row][column]) == 1) {
+			mykey = 1;
+			printf("\033[12;1f열쇠를 발견했다.\n");
+			Sleep(2000);
+			printf("\033[12;1f                                \n");
+		}
+
+		// 게임 종료 확인
+		if ((success(map5[row][column]) == 1) && (mykey == 1)) {
+			break;
+		}
+		else if ((success(map5[row][column]) == 1) && (mykey == 0)) {
+			printf("\033[12;1f잠겨있다.\n");
+			Sleep(2000);
+			printf("\033[12;1f                       \n");
+		}
+
+		// 게임 종료 아니면 새 이동 방향 입력 받아서 게임 계속 진행
+		printf("\033[15;1fWASD와[Enter]를 입력하세요:                  \033[15;29f");
+		scanf("\n%c", &direction);
+		printf("\033[16;1f                                                      ");
+
+	} while ((direction == 'W') || (direction == 'A') || (direction == 'S') || (direction == 'D')
+		|| (direction == 'w') || (direction == 'a') || (direction == 's') || (direction == 'd'));
+	system("cls");
+
+	//맵6출력
+	row = 18, column = 1;
+	mykey = 0;
+	int mykey2 = 0, mykey3 = 0, mykey4 = 0;
+	printMap(map6, 20, 15);
+	//독백6
+	printf("\033[19;3f옷\n");
+	printf("\033[21;1f도대체 언제쯤 이 지옥에서 벗어날 수 있을까...\n");
+	Sleep(2000);
+	printf("\033[21;1f더이상 나아갈 용기가 나지 않아...                ");
+	Sleep(2000);
+	printf("\033[21;1f                                                  ");
+
+	do {
+		// 캐릭터를 기존 위치에서 지우고 이동한 새 위치에 출력
+		printf("\033[%d;%df  ", row + 1, column * 2 + 1);
+		move(map6, direction, &row, &column);
+		printf("\033[%d;%df옷", row + 1, column * 2 + 1);
+		//열쇠 획득
+		if (key(map6[row][column]) == 1) {
+			mykey = 1;
+			printf("\033[21;1f열쇠조각1을 발견했다.\n");
+			Sleep(2000);
+			printf("\033[21;1f                                \n");
+		}
+		if (key2(map6[row][column]) == 1) {
+			mykey2 = 1;
+			printf("\033[21;1f열쇠조각2를 발견했다.\n");
+			Sleep(2000);
+			printf("\033[21;1f                                \n");
+		}
+		if (key3(map6[row][column]) == 1) {
+			mykey3 = 1;
+			printf("\033[21;1f열쇠조각3을 발견했다.\n");
+			Sleep(2000);
+			printf("\033[21;1f이건..열쇠조각이잖아?");
+			Sleep(2000);
+			printf("\033[21;1f조각을 다 모을 필요가 있겠어.");
+			Sleep(2000);
+			printf("\033[21;1f                                \n");
+		}
+		if (key4(map6[row][column]) == 1) {
+			mykey4 = 1;
+			printf("\033[21;1f열쇠조각4를 발견했다.\n");
+			Sleep(2000);
+			printf("\033[21;1f                                \n");
+		}
+
+		// 게임 종료 확인
+		if ((success(map6[row][column]) == 1) && ((mykey == 1) && (mykey2 == 1) && (mykey3 == 1) && (mykey4 == 1))) {
+			break;
+		}
+		else if ((success(map6[row][column]) == 1) && ((mykey == 0)||(mykey2 == 0)||(mykey3 == 0)||(mykey4 == 0))) {
+			printf("\033[21;1f잠겨있다.\n");
+			Sleep(2000);
+			printf("\033[21;1f                       \n");
+		}
+
+		// 게임 종료 아니면 새 이동 방향 입력 받아서 게임 계속 진행
+		printf("\033[24;1fWASD와[Enter]를 입력하세요:                  \033[24;29f");
+		scanf("\n%c", &direction);
+		printf("\033[25;1f                                                      ");
+
+	} while ((direction == 'W') || (direction == 'A') || (direction == 'S') || (direction == 'D')
+		|| (direction == 'w') || (direction == 'a') || (direction == 's') || (direction == 'd'));
+	system("cls");
+
+	//엔딩 컷신
+	printMap(map1, 3, 15);
+	printf("\033[2;1f 옷");
+	printf("\033[4;1f드...드디어..!");
+	Sleep(2000);
+	printf("\033[4;1f밖이 보인다...!!");
+	Sleep(2000);
+	printf("\033[4;1f신이시여! 감사합니다!");
+	Sleep(2000);
+	printf("\033[4;1f너무나도 힘든 싸움이었어....");
+	Sleep(2000);
+	printf("\033[4;1f                              ");
+	printf("\033[2;2f 옷");
+	Sleep(750);
+	printf("\033[2;3f 옷");
+	Sleep(750);
+	printf("\033[2;4f 옷");
+	Sleep(750);
+	printf("\033[2;5f 옷");
+	Sleep(750);
+	printf("\033[2;6f 옷");
+	Sleep(750);
+	printf("\033[2;7f 옷");
+	Sleep(750);
+	printf("\033[2;8f 옷");
+	Sleep(750);
+	printf("\033[2;9f 옷");
+	Sleep(750);
+	printf("\033[2;10f 옷");
+	Sleep(750);
+	printf("\033[2;11f 옷");
+	Sleep(750);
+	printf("\033[2;12f 옷");
+	Sleep(750);
+	printf("\033[2;13f 옷");
+	Sleep(750);
+	printf("\033[2;14f 옷");
+	Sleep(750);
+	printf("\033[2;15f 옷");
+	printf("\033[2;1f ~~긋~~");
+	Sleep(30);
+	printf("\033[2;2f ~~긋~~");
+	Sleep(30);
+	printf("\033[2;3f ~~긋~~");
+	Sleep(30);
+	printf("\033[2;4f ~~긋~~");
+	Sleep(30);
+	printf("\033[2;5f ~~긋~~");
+	Sleep(30);
+	printf("\033[2;6f ~~긋~~");
+	Sleep(30);
+	printf("\033[2;7f ~~긋~~");
+	Sleep(30);
+	printf("\033[2;8f ~~긋~~");
+	Sleep(30);
+	printf("\033[2;9f ~~긋~~");
+	Sleep(30);
+	printf("\033[2;10f ~~긋~~");
+	Sleep(30);
+	printf("\033[2;11f ~~긋~~");
+	Sleep(30);
+	printf("\033[2;12f ~~긋~~");
+	Sleep(30);
+	printf("\033[2;13f ~~긋~~");
+	Sleep(30);
+	printf("\033[2;14f ~~긋~~");
+	Sleep(30);
+	printf("\033[2;15f ~~긋~~");
+	Sleep(3000);
+	printf("\033[2;15f  ~긋~~");
+	Sleep(3000);
+	printf("\033[2;15f  ~긋~ ");
+	Sleep(3000);
+	printf("\033[2;15f   긋~ ");
+	Sleep(3000);
+	printf("\033[2;15f   긋  ");
+	Sleep(3000);
+	printf("\033[2;15f   옷  ");
+	Sleep(3000);
+	printf("\033[2;16f   옷  ");
+	Sleep(750);
+	printf("\033[2;17f   옷  ");
+	Sleep(750);
+	printf("\033[2;18f   옷  ");
+	Sleep(750);
+	printf("\033[2;19f   옷  ");
+	Sleep(750);
+	printf("\033[2;20f   옷  ");
+	Sleep(750);
+	printf("\033[2;21f   옷  ");
+	Sleep(750);
+	printf("\033[2;22f   옷  ");
+	Sleep(750);
+	printf("\033[2;23f   옷  ");
+	Sleep(750);
+	printf("\033[2;24f   옷  ");
+	Sleep(750);
+	printf("\033[2;25f   옷  ");
+	Sleep(750);
+	printf("\033[2;26f   옷  ");
+	Sleep(750);
+	printf("\033[2;27f   옷  ");
+	Sleep(750);
+	printf("\033[2;27f      ");
+	Sleep(5000);
+	system("cls");
+
+	// 프로그램 종료
+	return 0;
+}
