@@ -72,7 +72,7 @@ char map6[20][15] = { {'W','W','W','W','W','W','W','W','W','W','W','W','W','W','
 					  {'W',' ',' ',' ',' ',' ','W','W',' ',' ',' ',' ',' ',' ','W'},
 					  {'W','W','W','W','W','W','W','W','W','W','W','W','W','W','W'} };
 
-//맵 출력력
+//맵 출력
 void printMap(char map[][15], int rows, int cols) {
 	for (int row = 0; row < rows; row++) {
 		for (int column = 0; column < cols; column++) {
@@ -126,7 +126,7 @@ int success( char destination ) {
 		return 0;
 	}
 }
-//열열쇠 획득 확인
+//열쇠 획득 확인
 int key(char destination) {
 	if (destination == 'K') {
 		return 1;
